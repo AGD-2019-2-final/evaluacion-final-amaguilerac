@@ -14,3 +14,15 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+BD = LOAD 'data.tsv'
+    AS (letra:CHARARRAY, minusculas: BAG{t: TUPLE(p:CHARARRAY)},c3: MAP []);
+BD = FOREACH BD GENERATE FLATTEN (minusculas), FLATTEN (c3);
+
+grouped = GROUP BD BY ($0,$1);
+conteo = FOREACH grouped GENERATE group, COUNT(BD);
+
+--DUMP conteo;
+--DESCRIBE grouped;
+
+STORE conteo INTO 'output';
+fs -get output/ .

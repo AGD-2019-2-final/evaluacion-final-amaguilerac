@@ -1,13 +1,12 @@
-import sys
-#
-#  >>> Escriba el codigo del mapper a partir de este punto <<<
-#
-
-next(sys.stdin) ##para quitar encabezado
-if __name__ == "__main__":
-
-       for line in sys.stdin:
-         c1,c2,c3 = line.split("   ")
-         c3=c3.strip() ##Me quita los caracteres adiconales
-                   
-         sys.stdout.write("{},{},{}\n".format(c1,c3,c2)) 
+if _name_ == "_main_":
+    ##
+    ## itera sobre cada linea de codigo recibida
+    ## a traves del flujo de entrada
+    ##
+    for line in sys.stdin:
+      letra, fecha, val = line.split("   ")
+      val=val.strip()
+        ##
+        ## genera las tuplas palabra \tabulador 1
+        ## ya que es un conteo de palabras
+      sys.stdout.write("{},{},{}\n".format(letra, val, fecha))

@@ -27,3 +27,11 @@ fs -rm -f -r output;
 -- 
 --  >>> Escriba su respuesta a partir de este punto <<<
 -- 
+lines = LOAD 'truck_event_text_partition.csv' USING PigStorage (',');
+lines = foreach lines GENERATE $0,$1,$2;
+lines = LIMIT lines 10;
+lines = order lines by $0,$1,$2;
+--dump lines
+
+STORE lines INTO 'output' USING PigStorage (',');
+fs -get output/ .

@@ -12,3 +12,14 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+BD = LOAD 'data.tsv'
+    AS (letra:CHARARRAY, minusculas: BAG{t: TUPLE(p:CHARARRAY)},c3: MAP []);
+BD = FOREACH BD GENERATE letra, SIZE(minusculas), SIZE(c3);
+
+BD= ORDER BD BY $0,$1,$2;
+
+--DUMP BD;
+
+STORE BD INTO 'output' USING PigStorage (',');
+fs -get output/ .
+

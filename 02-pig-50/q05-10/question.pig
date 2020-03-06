@@ -12,3 +12,17 @@ fs -rm -f -r output;
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 
+BD = LOAD 'data.tsv'
+    AS (letra:CHARARRAY, minusculas: BAG{t: TUPLE(p:CHARARRAY)},MAP []);
+BD = FOREACH BD GENERATE minusculas.p;
+
+BD = FOREACH BD GENERATE FLATTEN ($0)  as minuscula;
+grouped = group BD by minuscula;
+
+--wordcount = FOREACH grouped GENERATE group , COUNT(BD);
+
+wordcount = FOREACH grouped GENERATE $0 , COUNT($1);
+--DUMP wordcount;
+
+STORE wordcount INTO 'output';
+fs -get output/ .

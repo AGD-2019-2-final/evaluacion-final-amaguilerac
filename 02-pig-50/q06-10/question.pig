@@ -12,3 +12,18 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+BD = LOAD 'data.tsv'
+    AS (letra:CHARARRAY, minusculas: BAG{t: TUPLE(p:CHARARRAY)},MAP []);
+BD = FOREACH BD GENERATE $2;
+BD = FOREACH BD GENERATE FLATTEN ($0)  as letra;
+grouped = group BD by letra;
+
+wordcount = FOREACH grouped GENERATE group , COUNT(BD);
+
+--wordcount = FOREACH grouped GENERATE $0 , COUNT($1);
+--DUMP wordcount;
+
+STORE wordcount INTO 'output' USING PigStorage (',');
+fs -get output/ .
+
+

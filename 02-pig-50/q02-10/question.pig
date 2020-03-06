@@ -10,3 +10,9 @@ fs -rm -f -r output;
 -- 
 
 
+y = LOAD 'data.tsv' USING PigStorage ('\t') AS (letra:CHARARRAY,fecha:CHARARRAY,valor:INT);
+
+y = ORDER y BY letra, valor;
+
+STORE y INTO 'output';
+fs -get output/ .

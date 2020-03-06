@@ -28,4 +28,11 @@
 fs -rm -f -r output;
 --
 
+BD = LOAD 'data.csv' USING PigStorage (',') AS (num : INT, nombre : CHARARRAY, ciudad : CHARARRAY, fecha : CHARARRAY, color : CHARARRAY, num2 : INT);
 
+BD = FOREACH BD GENERATE CONCAT(nombre,'@',ciudad);
+
+--Dump BD;
+
+STORE BD INTO 'output';
+fs -get output/ .

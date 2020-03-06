@@ -27,3 +27,11 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+BD = FOREACH u GENERATE firstname AS c1;
+BD = FILTER BD by (c1 >='M');
+
+
+--DUMP BD;
+
+STORE BD INTO 'output' USING PigStorage(',');
+fs -get output/ .

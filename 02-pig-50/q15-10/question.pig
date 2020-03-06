@@ -27,3 +27,11 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+BD = FILTER u by color MATCHES 'blue';
+BD = FILTER BD by (firstname > 'Z');
+BD = FOREACH BD GENERATE $1,$4;
+
+--Dump BD;
+
+STORE BD INTO 'output' USING PigStorage('\t');
+fs -get output/ .

@@ -27,3 +27,23 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+u = LOAD 'data.csv' USING PigStorage(',') 
+    AS (id:int, 
+        firstname:CHARARRAY, 
+        surname:CHARARRAY, 
+        birthday:CHARARRAY, 
+        color:CHARARRAY, 
+        quantity:INT);
+--
+-- >>> Escriba su respuesta a partir de este punto <<<
+--
+
+BD = FOREACH u GENERATE color AS c1;
+BD2 = FILTER BD by ($0 <'b');
+Dump BD2;
+
+BD1 = FILTER BD by ($0 >'c');
+--Dump BD1;
+
+STORE BD1 INTO 'output' USING PigStorage(',');
+fs -get output/ .

@@ -39,5 +39,10 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+DROP TABLE IF EXISTS resultados;
+CREATE TABLE resultados AS SELECT c2, concat_ws(':', collect_set(cast(c1 as string))) AS numeros FROM tbl0 GROUP BY c2;
 
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM resultados;
 
